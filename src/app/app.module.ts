@@ -11,13 +11,14 @@ import {JobModule} from './jobs/Job.module'
 
 @NgModule({
   declarations: [
-    AppComponent,
-    JobModule
+    AppComponent
+    
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    JobModule
   ],
   providers: [],
   bootstrap: [AppComponent]
