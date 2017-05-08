@@ -39,4 +39,7 @@ getJob(id: number) {
             error => this.errorMessage = <any>error);
            
     }
+     onBack(): void {
+        this._router.navigate(['/jobs']);
+    }
 }
