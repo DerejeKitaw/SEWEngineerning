@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -33,6 +33,9 @@ pageTitle: string = 'Job Detail';
 
         });
   }
+   ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
 getJob(id: number) {
         this._jobService.getJob(id).subscribe(
             job => this.job = job,
