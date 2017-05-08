@@ -74,7 +74,8 @@ export class JobEditComponent implements OnInit {
     this.editForm = this.fb.group({
       'FirstName': [this.job.FirstName, [Validators.required]],
       'LastName': [this.job.LastName, [Validators.required]],
-      'County': [this.job.LastName, [Validators.required]]
+      'County': [this.job.County, [Validators.required]],
+      'Address': [this.job.Address, [Validators.required]]
     });
 
     this.editForm.valueChanges
