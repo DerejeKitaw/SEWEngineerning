@@ -5,9 +5,14 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 
+
+/** Feature Modules */
+import {JobModule} from './jobs/Job.module'
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    JobModule
   ],
   imports: [
     BrowserModule,
