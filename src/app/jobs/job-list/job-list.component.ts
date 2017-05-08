@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+
 import { IJob } from '../job';
+import { JobService } from '../job.service';
 
 @Component({
   selector: 'sew-job-list',
@@ -12,7 +14,8 @@ export class JobListComponent implements OnInit {
     errorMessage: string;
 
     jobs: IJob[];
-  constructor() { }
+
+  constructor(private _productService: JobService) { }
 
   ngOnInit() {
   }
