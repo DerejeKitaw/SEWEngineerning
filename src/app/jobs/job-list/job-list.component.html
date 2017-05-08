@@ -2,5 +2,31 @@
     <div class='panel-heading'>
         {{pageTitle}}
     </div>
-
+<div class='table-responsive'>
+            <table class='table'
+                   *ngIf = 'jobs && jobs.length'>
+                <thead>
+                    <tr>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>County</th>
+                        <th>Address</th>
+                        <th>Utility</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor = 'let job of jobs'> 
+                        <td><a [routerLink]="['/job', job._id]">
+                            {{job.FirstName}}
+                            </a>
+                        </td>
+                        <td>{{ job.LastName  }}</td>
+                        <td>{{ job.County }}</td>
+                        <td>{{ job.Address }}</td>
+                        <td>{{ job.Utility }}</td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 </div>

@@ -12,7 +12,8 @@ import { IJob } from './job';
 @Injectable()
 export class JobService {
 
-  private _jobUrl = 'api/jobs/jobs.json';
+  //private _jobUrl = 'api/jobs/jobs.json';
+  private _jobUrl = '/api/jobs';
 
   constructor(private _http: Http) { }
 

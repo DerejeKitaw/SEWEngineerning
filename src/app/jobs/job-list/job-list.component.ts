@@ -15,9 +15,12 @@ export class JobListComponent implements OnInit {
 
     jobs: IJob[];
 
-  constructor(private _productService: JobService) { }
+  constructor(private _jobService: JobService) { }
 
-  ngOnInit() {
-  }
+  ngOnInit(): void {
+        this._jobService.getJobs()
+                .subscribe(jobs => this.jobs = jobs,
+                           error => this.errorMessage = <any>error);
+    }
 
 }

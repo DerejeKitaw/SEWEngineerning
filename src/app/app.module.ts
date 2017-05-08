@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { JobService } from './jobs/job.service';
+//import { JobService } from './jobs/job.service';
 
 /** Feature Modules */
 import {JobModule} from './jobs/Job.module';
@@ -30,7 +30,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ]),
     JobModule
   ],
-  providers: [JobService],
+  //providers: [JobService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
