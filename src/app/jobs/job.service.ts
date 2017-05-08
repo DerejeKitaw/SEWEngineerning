@@ -20,7 +20,7 @@ export class JobService {
   getJobs(): Observable<IJob[]> {
     return this._http.get(this._jobUrl)
       .map((response: Response) => <IJob[]>response.json())
-      .do(data => console.log('All: ' + JSON.stringify(data)))
+      //.do(data => console.log('All: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 

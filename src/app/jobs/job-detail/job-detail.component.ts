@@ -14,6 +14,7 @@ import { JobService } from '../job.service';
 export class JobDetailComponent implements OnInit {
 pageTitle: string = 'Job Detail';
     job: IJob;
+    jobparam;
     errorMessage: string;
     private sub: Subscription;
 
@@ -28,11 +29,14 @@ pageTitle: string = 'Job Detail';
             params => {
                 let id = +params['id'];
                 this.getJob(id);
+                console.log(id); 
+                
         });
   }
 getJob(id: number) {
         this._jobService.getJob(id).subscribe(
             job => this.job = job,
             error => this.errorMessage = <any>error);
+           
     }
 }
