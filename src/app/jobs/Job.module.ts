@@ -6,6 +6,7 @@ import { JobDetailComponent } from './job-detail/job-detail.component';
 
 
 import { JobService } from './job.service';
+import { JobEditComponent } from './job-edit/job-edit.component';
 
 
 @NgModule({
@@ -13,12 +14,11 @@ import { JobService } from './job.service';
     CommonModule,
     RouterModule.forChild([
       { path: 'jobs', component: JobListComponent },
-      { path: 'job/:id',
-
-        component: JobDetailComponent
-      }  ])
+      { path: 'job/:id', component: JobDetailComponent},
+      { path: 'jobs/:id/edit', component: JobEditComponent },
+        ])
   ],
     providers: [JobService],
-  declarations: [JobListComponent, JobDetailComponent]
+  declarations: [JobListComponent, JobDetailComponent, JobEditComponent]
 })
 export class JobModule { }

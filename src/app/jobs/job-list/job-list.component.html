@@ -24,7 +24,12 @@
                         <td>{{ job.County }}</td>
                         <td>{{ job.Address }}</td>
                         <td>{{ job.Utility }}</td>
-                        
+                        <td>
+                            <a class="btn btn-primary" 
+                               [routerLink]="['/jobs', job._id, 'edit']">
+                                Edit
+                            </a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
