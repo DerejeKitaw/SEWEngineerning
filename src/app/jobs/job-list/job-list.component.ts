@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IJob } from '../job';
 
 @Component({
   selector: 'sew-job-list',
@@ -6,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./job-list.component.css']
 })
 export class JobListComponent implements OnInit {
+    pageTitle: string = 'Job List';
+    listFilter: string;
+    errorMessage: string;
 
+    jobs: IJob[];
   constructor() { }
 
   ngOnInit() {
