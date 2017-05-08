@@ -30,8 +30,7 @@ pageTitle: string = 'Job Detail';
               //console.log(params['id']);
                 let id = params['id'];
                 this.getJob(id);
-                
-                
+
         });
   }
 getJob(id: number) {
