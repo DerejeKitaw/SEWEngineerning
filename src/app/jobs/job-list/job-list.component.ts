@@ -19,8 +19,10 @@ export class JobListComponent implements OnInit {
 
   ngOnInit(): void {
         this._jobService.getJobs()
-                .subscribe(jobs => this.jobs = jobs,
+                .subscribe(jobs =>{ this.jobs = jobs,
+                console.log(this.jobs);  },
                            error => this.errorMessage = <any>error);
-    }
+  
+  }
 
 }

@@ -1,3 +1,44 @@
-<p>
-  job-detail works!
-</p>
+{{jobparam}} <div class='panel panel-primary' *ngIf='job'>
+    <div class='panel-heading' style='font-size:large'>
+        {{pageTitle + ': ' + job.FirstName}}
+    </div>
+
+    <div class='panel-body'>
+        <div class='row'>
+            <div class='col-md-6'>
+                <div class='row'>
+                    <div class='col-md-4'>First Name:</div>
+                    <div class='col-md-8'>{{job.FirstName}}</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-4'>LastName:</div>
+                    <div class='col-md-8'>{{job.LastName}}</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-4'>County:</div>
+                    <div class='col-md-8'>{{job.County}}</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-4'>Address:</div>
+                    <div class='col-md-8'>{{job.Address}}</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-4'>Customer Email:</div>
+                    <div class='col-md-8'>{{job.CustomerEmail}}</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-4'>Utility:</div>
+                   <div class='col-md-8'>{{job.Utility}}</div>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <div class='panel-footer'>
+        <a class='btn btn-default' (click)='onBack()' style='width:80px'>
+            <i class='glyphicon glyphicon-chevron-left'></i> Back
+        </a>
+    </div>
+</div>
