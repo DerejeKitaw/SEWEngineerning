@@ -36,22 +36,28 @@ export class JobService {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
   }
+  addJob(newJob) {
+    const url = `${this._jobUrl}`;
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this._http.post(url, JSON.stringify(newJob), { headers: headers })
+      .map(res => res.json());
+  }
+  saveJob(job: IJob): Observable<IJob> {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers });
 
-      saveJob(job: IJob): Observable<IJob> {
-        const headers = new Headers({ 'Content-Type': 'application/json' });
-        const options = new RequestOptions({ headers: headers });
+    // if (job.id === 0) {
+    //     return this.createJob(job, options);
+    // }
+    return this.updateJob(job, options);
+  }
 
-        // if (job.id === 0) {
-        //     return this.createJob(job, options);
-        // }
-        return this.updateJob(job, options);
-    }
-
-       private updateJob(job: IJob, options: RequestOptions): Observable<IJob> {
-        const url = `${this._jobUrl}/${job._id}`;
-        return this._http.put(url, job, options)
-            .map(() => job)
-            //.do(data => console.log('updateJob: ' + JSON.stringify(data)))
-            .catch(this.handleError);
-    }
+  private updateJob(job: IJob, options: RequestOptions): Observable<IJob> {
+    const url = `${this._jobUrl}/${job._id}`;
+    return this._http.put(url, job, options)
+      .map(() => job)
+      //.do(data => console.log('updateJob: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
 }
