@@ -32,6 +32,7 @@ router.post('/job', function(req, res, next){
             "error": "Bad Data"
         });
     } else {
+        console.log('***Saving Data***');
         db.jobs.save(job, function(err, job){
             if(err){
                 res.send(err);

@@ -48,6 +48,7 @@ export class JobEditComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    console.log('*** JobEditComponent Initialized**');
     this.route.params.subscribe(
       params => {
         let id = params['id'];
@@ -64,7 +65,7 @@ export class JobEditComponent implements OnInit {
   }
   onJobRetrieved(job: IJob) {
     this.job = job;
-
+    console.log('*** Retriving job with id :**' + job._id);
     if (this.job._id === 0) {
       this.pageTitle = 'Add Job (Reactive)';
     } else {
