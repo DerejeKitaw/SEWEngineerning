@@ -144,6 +144,7 @@ export class JobEditComponent implements OnInit {
     // this.onBack();
     //this.router.navigate(['/Jobs']);
   }
+<<<<<<< HEAD
 
   delete(event: Event) {
     event.preventDefault();
@@ -165,3 +166,36 @@ export class JobEditComponent implements OnInit {
   //         this.router.navigate(['/jobs']);
   //     }
 }
+=======
+  // saveJob() {
+  //   console.log(this.editForm);
+  //   if (this.editForm.dirty && this.editForm.valid) {
+  //     this.job = this.editForm.value;
+  //     alert(`Job: ${JSON.stringify(this.editForm.value)}`);
+  //   }
+  // }
+      saveJob(): void {
+        console.log("Edit Form dirty : "+this.editForm.dirty);
+        console.log("Edit Form valid : "+this.editForm.valid);
+        if (this.editForm.dirty && this.editForm.valid) {
+            // Copy the form values over the object values
+            const m = Object.assign({}, this.job, this.editForm.value);
+            console.log("job value : " + this.job);
+
+            this.jobService.saveJob(m).subscribe(
+                () => this.onSaveComplete(),
+                (error: any) => this.errorMessage = <any>error
+            );
+        } else if (!this.editForm.dirty) {
+        console.log("---Save Completed ---");
+            this.onSaveComplete();
+        }
+    }
+
+    onSaveComplete(): void {
+        // Reset the form to clear the flags
+        this.editForm.reset();
+        this.router.navigate(['/jobs']);
+    }
+}
+>>>>>>> 27051ff132c6f3089cc694c8529923c5a5627275

@@ -26,14 +26,18 @@ router.get('/job/:id', function (req, res, next) {
 //Save Project
 router.post('/job', function (req, res, next) {
     var job = req.body;
+
     if (!job.FirstName || !(job.LastName + '')) {
+
         res.status(400);
         res.json({
             "error": "Bad Data"
         });
     } else {
+
         console.log('***Saving Data from post***');
         db.projects.save(job, function (err, job) {
+
             if (err) {
                 res.send(err);
             }
@@ -54,6 +58,7 @@ router.delete('/job/:id', function (req, res, next) {
 
 // Update Project
 router.put('/job/:id', function (req, res, next) {
+
     console.log('***Saving Data from put***');
     var job = req.body;
     var jobForm = {};
@@ -81,6 +86,26 @@ router.put('/job/:id', function (req, res, next) {
             res.json(job);
         });
     }
+    var job = req.body;
+    var upJob = {};
+    if (job._id) {
+        upJob.FirstName = job.FirstName
+        upJob.LastName = job.LastName
+        upJob.County = job.County
+        upJob.Address = job.Address
+        upJob.Utility = job.Utility
+    }
+    console.log("job : " + JSON.stringify(job));
+    console.log("error saving job : ");
+    db.projects.update({ _id: mongojs.ObjectId(req.params.id) }, upJob, {}, function (err, job) {
+        if (err) {
+            console.log("error saving job : " + err);
+            res.send(err);
+        }
+        console.log("job Saved: " + req.params.id);
+        res.json(job);
+    });
+
 });
 
 module.exports = router;

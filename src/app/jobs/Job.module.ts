@@ -18,8 +18,10 @@ import { JobAddComponent } from './job-add/job-add.component';
     RouterModule.forChild([
       { path: 'jobs', component: JobListComponent },
       { path: 'job/:id', component: JobDetailComponent},
+
       { path: 'job/:id/edit', component: JobEditComponent },
       { path: 'job/:id/add', component: JobAddComponent }
+
         ])
   ],
     providers: [JobService],

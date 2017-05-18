@@ -3,11 +3,19 @@
         {{pageTitle}}
     </div>
 
+<<<<<<< HEAD
     <div class="panel-body" *ngIf="job">
         <form class="form-horizontal"
               novalidate
               [formGroup]="jobForm"
               (ngSubmit)="submit(jobForm)">
+=======
+    <div class="panel-body" *ngIf="newJob">
+        <form class="form-horizontal"
+              novalidate
+              [formGroup]="editForm"
+              (ngSubmit)="saveJob()">
+>>>>>>> 27051ff132c6f3089cc694c8529923c5a5627275
             <fieldset>
                 <div class="form-group" 
                      [ngClass]="{'has-error': formError.FirstName }">
@@ -76,9 +84,14 @@
                             <button class="btn btn-primary"
                                     type="submit"
                                     style="width:80px;margin-right:10px"
+<<<<<<< HEAD
                                     [disabled]='!jobForm.valid'
                                     >
                                 {{operationText}}
+=======
+                                    [disabled]='!editForm.valid'>
+                                Save
+>>>>>>> 27051ff132c6f3089cc694c8529923c5a5627275
                             </button>
                         </span>
                         <span>
