@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import { Component, OnInit ,OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -8,13 +8,7 @@ import { Subscription }       from 'rxjs/Subscription';
 
 
 import { IJob } from '../../shared/interfaces';
-// =======
-// import { Component, OnInit } from '@angular/core';
-// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { Router, ActivatedRoute } from '@angular/router';
 
-// import { IJob } from '../job';
-// >>>>>>> 27051ff132c6f3089cc694c8529923c5a5627275
 import { JobService } from '../job.service';
 
 
@@ -134,7 +128,7 @@ export class JobAddComponent implements OnInit {
 console.log('value_id='+value._id);
     if (value._id) {
 
-      this.dataService.updateJob(value)
+      this.dataService.saveJob(value)
         .subscribe((job: IJob) => {
           if (job) {
             this.router.navigate(['/Jobs']);
