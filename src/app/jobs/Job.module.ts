@@ -17,7 +17,7 @@ import { JobEditComponent } from './job-edit/job-edit.component';
     RouterModule.forChild([
       { path: 'jobs', component: JobListComponent },
       { path: 'job/:id', component: JobDetailComponent},
-      { path: 'jobs/:id/edit', component: JobEditComponent },
+      { path: 'job/:id/edit', component: JobEditComponent },
         ])
   ],
     providers: [JobService],

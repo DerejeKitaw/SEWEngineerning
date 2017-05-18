@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { Subscription }       from 'rxjs/Subscription';
 
-import { IJob } from '../job';
+import { IJob } from '../../shared/interfaces';
 import { JobService } from '../job.service';
 @Component({
   selector: 'sew-job-detail',
@@ -36,7 +36,7 @@ pageTitle: string = 'Job Detail';
    ngOnDestroy() {
         this.sub.unsubscribe();
     }
-getJob(id: number) {
+getJob(id: string) {
         this._jobService.getJob(id).subscribe(
             job => this.job = job,
             error => this.errorMessage = <any>error);

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { IJob } from '../job';
+import { IJob } from '../../shared/interfaces';
 import { JobService } from '../job.service';
 
 
@@ -13,97 +13,149 @@ import { JobService } from '../job.service';
 })
 export class JobEditComponent implements OnInit {
   pageTitle: string = 'Edit Job';
-  editForm: FormGroup;
-  formError: { [id: string]: string };
-  private validationMessages: { [id: string]: { [id: string]: string } };
-  job: IJob;
+   formError: { [id: string]: string };
+  // Operation text can be :  Update for edit, Insert for new
+  jobForm: FormGroup;
+  job: IJob
+  = {
+    _id: '',
+    FirstName: '',
+    LastName: '',
+    County: '',
+    Address: '',
+    CustomerEmail: '',
+    CustomerPhone: '',
+    Utility: '',
+    SiteAssessDateReceived: '',
+    SiteAssessDateReleased: '',
+    EngineeringDesignReceived: '',
+    EngineeringDesignSentToRep: '',
+    EngineeringDesignApprovedByRep: '',
+    EngineeringDesignReleased: '',
+    NTPSubmited: '',
+    NTPApproved: '',
+    InterconnectionSubmited: '',
+    InterconnectionApproved: '',
+    PermitsSubmited: '',
+    PermitsApproved: '',
+    EquipmentOrdered: '',
+    EquipmentOnHand: '',
+    HOASubmited: '',
+    HOAApproved: '',
+    Notes: '',
+    ScheduleDate: '',
+    ModuleType: '',
+    ModulePower: '',
+    InverterManufacturer: '',
+    InverterSize: '',
+    Price: 0,
+    Type: '',
+  };
+
   errorMessage: string;
+  deleteMessageEnabled: boolean;
+  operationText: string = 'Insert';
 
-  constructor(private fb: FormBuilder,
-    private jobService: JobService,
-    private router: Router,
-    private route: ActivatedRoute) {
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+    private dataService: JobService,
+    private formBuilder: FormBuilder) {
 
-    // Initialize strings
-    this.formError = {
-      'FirstName': '',
-      'LastName': '',
-      'County': ''
-    };
-    this.validationMessages = {
-      'FirstName': {
-        'required': 'Job FirstName is required',
-        'minlength': 'Job FirstName must be at least three characters.',
-        'maxlength': 'Job FirstName cannot exceed 50 characters.'
-      },
-      'LastName': {
-        'required': 'Director is required',
-        'minlength': 'Director must be at least 5 characters.',
-        'maxlength': 'Director cannot exceed 50 characters.'
-      },
-      'County': {
-        'range': 'Rate the job between 1 (lowest) and 5 (highest).'
-      }
-    };
-
-  }
-  ngOnInit(): void {
-    console.log('*** JobEditComponent Initialized**');
-    this.route.params.subscribe(
-      params => {
-        let id = params['id'];
-        this.getJob(id);
-      }
-    );
-
-  }
-  getJob(id: number) {
-    this.jobService.getJob(id)
-      .subscribe(
-      job => this.onJobRetrieved(job),
-      error => this.errorMessage = <any>error);
-  }
-  onJobRetrieved(job: IJob) {
-    this.job = job;
-    console.log('*** Retriving job with id :**' + job._id);
-    if (this.job._id === 0) {
-      this.pageTitle = 'Add Job (Reactive)';
-    } else {
-      this.pageTitle = `Edit Job (Reactive): ${this.job.FirstName}`;
+  // Initialize strings
+        this.formError = {
+            'FirstName': '',
+            'LastName': '',
+            'County': '',
+            'Address': ''
+        };
+      
+     }
+  ngOnInit() {
+    let id = this.route.snapshot.params['id'];
+    console.log('id = ' + id);
+    if (id !== '0') {
+      this.operationText = 'Update';
+      this.getJob(id);
     }
+    console.log('not zero id = ' + id);
+    //this.getJob(id);
+    this.buildForm();
+  }
 
-    this.editForm = this.fb.group({
-      'FirstName': [this.job.FirstName, [Validators.required]],
-      'LastName': [this.job.LastName, [Validators.required]],
-      'County': [this.job.County, [Validators.required]],
-      'Address': [this.job.Address, [Validators.required]]
+  getJob(id: string) {
+    this.dataService.getJob(id)
+      .subscribe((job: IJob) => {
+        //Quick and dirty clone used in case user cancels out of form
+        const cust = JSON.stringify(job);
+        this.job = JSON.parse(cust);
+        this.buildForm();
+      },
+      (err) => console.log(err));
+  }
+
+  buildForm() {
+    this.jobForm = this.formBuilder.group({
+      FirstName: [this.job.FirstName, Validators.required],
+      LastName: [this.job.LastName, Validators.required],
+      County: [this.job.County, Validators.required],
+      Address: [this.job.Address, Validators.required],
     });
-
-    this.editForm.valueChanges
-      .subscribe(data => this.onValueChanged(data));
-
   }
-  onValueChanged(data: any) {
-    for (let field in this.formError) {
-      if (this.formError.hasOwnProperty(field)) {
-        let hasError = this.editForm.controls[field].dirty &&
-          !this.editForm.controls[field].valid;
-        this.formError[field] = '';
-        if (hasError) {
-          for (let key in this.editForm.controls[field].errors) {
-            if (this.editForm.controls[field].errors.hasOwnProperty(key)) {
-              this.formError[field] += this.validationMessages[field][key] + ' ';
-            }
+
+
+  submit({ value, valid }: { value: IJob, valid: boolean }) {
+
+    value._id = this.job._id;
+    // var job: IJob = {
+    //   _id: this.job._id,
+    // };
+
+    if (value._id) {
+
+      this.dataService.updateJob(value)
+        .subscribe((job: IJob) => {
+          if (job) {
+            this.router.navigate(['/Jobs']);
           }
+          else {
+            this.errorMessage = 'Unable to save job';
+          }
+        },
+        (err) => console.log(err));
+
+    } else {
+
+      this.dataService.insertJob(value)
+        .subscribe((job: IJob) => {
+          if (job) {
+            this.router.navigate(['/Jobs']);
+          }
+          else {
+            this.errorMessage = 'Unable to add job';
+          }
+        },
+        (err) => console.log(err));
+
+    }
+  }
+
+  cancel(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['/Jobs']);
+  }
+
+  delete(event: Event) {
+    event.preventDefault();
+    this.dataService.deleteJob(this.job._id)
+      .subscribe((status: boolean) => {
+        if (status) {
+          this.router.navigate(['/Jobs']);
         }
-      }
-    }
+        else {
+          this.errorMessage = 'Unable to delete job';
+        }
+      },
+      (err) => console.log(err));
   }
-  saveJob() {
-    console.log(this.editForm);
-    if (this.editForm.dirty && this.editForm.valid) {
-      this.job = this.editForm.value;
-      alert(`Job: ${JSON.stringify(this.editForm.value)}`);
-    }
-  }
+
 }

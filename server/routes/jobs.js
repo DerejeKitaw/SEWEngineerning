@@ -4,9 +4,9 @@ var mongojs = require('mongojs');
 var db = mongojs('mongodb://dereje:dereje@ds049466.mlab.com:49466/projectdb', ['projects']);
 
 // Get All Projects
-router.get('/jobs', function(req, res, next){
-    db.projects.find(function(err, jobs){
-        if(err){
+router.get('/jobs', function (req, res, next) {
+    db.projects.find(function (err, jobs) {
+        if (err) {
             res.send(err);
         }
         res.json(jobs);
@@ -14,9 +14,9 @@ router.get('/jobs', function(req, res, next){
 });
 
 // Get Single Project
-router.get('/job/:id', function(req, res, next){
-    db.projects.findOne({_id: mongojs.ObjectId(req.params.id)}, function(err, job){
-        if(err){
+router.get('/job/:id', function (req, res, next) {
+    db.projects.findOne({ _id: mongojs.ObjectId(req.params.id) }, function (err, job) {
+        if (err) {
             res.send(err);
         }
         res.json(job);
@@ -24,17 +24,17 @@ router.get('/job/:id', function(req, res, next){
 });
 
 //Save Project
-router.post('/job', function(req, res, next){
+router.post('/job', function (req, res, next) {
     var job = req.body;
-    if(!job.title || !(job.isDone + '')){
+    if (!job.title || !(job.isDone + '')) {
         res.status(400);
         res.json({
             "error": "Bad Data"
         });
     } else {
-        console.log('***Saving Data***');
-        db.jobs.save(job, function(err, job){
-            if(err){
+        console.log('***Saving Data from post***');
+        db.projects.save(job, function (err, job) {
+            if (err) {
                 res.send(err);
             }
             res.json(job);
@@ -43,9 +43,9 @@ router.post('/job', function(req, res, next){
 });
 
 // Delete Project
-router.delete('/job/:id', function(req, res, next){
-    db.jobs.remove({_id: mongojs.ObjectId(req.params.id)}, function(err, job){
-        if(err){
+router.delete('/job/:id', function (req, res, next) {
+    db.jobs.remove({ _id: mongojs.ObjectId(req.params.id) }, function (err, job) {
+        if (err) {
             res.send(err);
         }
         res.json(job);
@@ -53,30 +53,33 @@ router.delete('/job/:id', function(req, res, next){
 });
 
 // Update Project
-router.put('/job/:id', function(req, res, next){
+router.put('/job/:id', function (req, res, next) {
+    console.log('***Saving Data from put***');
     var job = req.body;
-    var updTask = {};
-    
-    if(job.isDone){
-        updTask.isDone = job.isDone;
+    var jobForm = {};
+// TODO: Validate data
+    if (job.FirstName) {
+        jobForm.FirstName = job.FirstName;
     }
-    
-    if(job.title){
-        updTask.title = job.title;
+    if (job.LastName) {
+        jobForm.LastName = job.LastName;
     }
-    
-    if(!updTask){
+    jobForm.County = job.County
+    jobForm.Address = job.Address
+    jobForm.Utility = job.Utility
+
+    if (!jobForm) {
         res.status(400);
         res.json({
-            "error":"Bad Data"
+            "error": "Bad Data"
         });
     } else {
-        db.jobs.update({_id: mongojs.ObjectId(req.params.id)},updTask, {}, function(err, job){
-        if(err){
-            res.send(err);
-        }
-        res.json(job);
-    });
+        db.projects.update({ _id: mongojs.ObjectId(req.params.id) }, jobForm, {}, function (err, job) {
+            if (err) {
+                res.send(err);
+            }
+            res.json(job);
+        });
     }
 });
 
