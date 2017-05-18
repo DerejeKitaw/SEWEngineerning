@@ -32,15 +32,15 @@ export class JobService {
     return this.getJobs()
       .map((jobs: IJob[]) => jobs.find(p => p._id === id));
   }
-  // updateJob(job: IJob): Observable<IJob> {
-  //   return this._http.put(this._baseUrl + '/' + job._id, job)
-  //     .map((res: Response) => {
-  //       const data = res.json();
-  //       console.log('updateJob status: ' + data.status);
-  //       return data.job;
-  //     })
-  //     .catch(this.handleError);
-  // }
+  updateJob(job: IJob): Observable<IJob> {
+    return this._http.put(this._baseUrl + '/' + job._id, job)
+      .map((res: Response) => {
+        const data = res.json();
+        console.log('updateJob status: ' + data.status);
+        return data.job;
+      })
+      .catch(this.handleError);
+  }
   insertJob(job: IJob): Observable<IJob> {
     return this._http.post(this._baseUrl, job)
       .map((res: Response) => {
