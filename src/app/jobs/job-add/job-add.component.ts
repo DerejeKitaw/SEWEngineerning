@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit ,OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription }       from 'rxjs/Subscription';
 
 
 import { IJob } from '../../shared/interfaces';
@@ -11,17 +11,17 @@ import { JobService } from '../job.service';
 
 
 @Component({
-  selector: 'sew-job-edit',
-  templateUrl: './job-edit.component.html',
-  styleUrls: ['./job-edit.component.css']
+  selector: 'sew-job-add',
+  templateUrl: './job-add.component.html',
+  styleUrls: ['./job-add.component.css']
 })
-export class JobEditComponent implements OnInit {
-  pageTitle: string = 'Edit Job';
-  formError: { [id: string]: string };
+export class JobAddComponent implements OnInit {
+ pageTitle: string = 'Edit Job';
+   formError: { [id: string]: string };
   // Operation text can be :  Update for edit, Insert for new
   jobForm: FormGroup;
-  //private sub: Subscription;
-
+  private sub: Subscription;
+  
   job: IJob = {
     _id: '',
     FirstName: '',
@@ -66,34 +66,27 @@ export class JobEditComponent implements OnInit {
     private dataService: JobService,
     private formBuilder: FormBuilder) {
 
-    // Initialize strings
-    this.formError = {
-      'FirstName': '',
-      'LastName': '',
-      'County': '',
-      'Address': ''
-    };
-
-  }
+  // Initialize strings
+        this.formError = {
+            'FirstName': '',
+            'LastName': '',
+            'County': '',
+            'Address': ''
+        };
+      
+     }
   ngOnInit() {
     let id = this.route.snapshot.params['id'];
-
+    
     if (id !== '0') {
       console.log('Existing job id = ' + id);
       this.operationText = 'Update';
       this.getJob(id);
-      this.buildForm();
-      // this.sub = this.route.params.subscribe(
-      //         params => {
-      //           //console.log(params['id']);
-      //             let id = params['id'];
-      //             this.getJob(id);
 
-      //     });
-    } else {
-      console.log('**this is new job**');
-      //this.getJob(id);
-      this.buildForm();
+    }else{
+    console.log('**this is new job**');
+    //this.getJob(id);
+    this.buildForm();
     }
 
 
@@ -124,24 +117,45 @@ export class JobEditComponent implements OnInit {
 
 
   submit({ value, valid }: { value: IJob, valid: boolean }) {
-    console.log('**form submited***'+JSON.stringify(value) +'valid= '+ valid);
+
     value._id = this.job._id;
+    // var job: IJob = {
+    //   _id: this.job._id,
+    // };
+console.log('value_id='+value._id);
+    if (value._id) {
 
       this.dataService.updateJob(value)
         .subscribe((job: IJob) => {
-         
-            console.log('**job is updated**');
-            this.router.navigate(['/jobs']);
-      
+          if (job) {
+            this.router.navigate(['/Jobs']);
+          }
+          else {
+            this.errorMessage = 'Unable to save job';
+          }
         },
         (err) => console.log(err));
 
-    // this.onBack();
+    } else {
+
+      this.dataService.insertJob(value)
+        .subscribe((job: IJob) => {
+          if (job) {
+            this.router.navigate(['/jobs']);
+            this.errorMessage = 'job added to database';
+          }
+          else {
+            this.errorMessage = 'Unable to add job';
+          }
+        },
+        (err) => console.log(err));
+
+    }
+
   }
 
   cancel(event: Event) {
     event.preventDefault();
-    // this.onBack();
     //this.router.navigate(['/Jobs']);
   }
 
@@ -150,7 +164,7 @@ export class JobEditComponent implements OnInit {
     this.dataService.deleteJob(this.job._id)
       .subscribe((status: boolean) => {
         if (status) {
-          this.router.navigate(['/jobs']);
+          this.router.navigate(['/Jobs']);
         }
         else {
           this.errorMessage = 'Unable to delete job';
@@ -158,10 +172,5 @@ export class JobEditComponent implements OnInit {
       },
       (err) => console.log(err));
   }
-  //      ngOnDestroy() {
-  //         this.sub.unsubscribe();
-  //     }
-  // onBack(): void {
-  //         this.router.navigate(['/jobs']);
-  //     }
+
 }

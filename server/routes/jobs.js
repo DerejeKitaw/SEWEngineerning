@@ -26,7 +26,7 @@ router.get('/job/:id', function (req, res, next) {
 //Save Project
 router.post('/job', function (req, res, next) {
     var job = req.body;
-    if (!job.title || !(job.isDone + '')) {
+    if (!job.FirstName || !(job.LastName + '')) {
         res.status(400);
         res.json({
             "error": "Bad Data"
