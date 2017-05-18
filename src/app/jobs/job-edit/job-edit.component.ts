@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { Router, ActivatedRoute } from '@angular/router';
+
+import { Subscription }       from 'rxjs/Subscription';
+
 
 import { IJob } from '../../shared/interfaces';
 import { JobService } from '../job.service';
@@ -16,6 +20,8 @@ export class JobEditComponent implements OnInit {
    formError: { [id: string]: string };
   // Operation text can be :  Update for edit, Insert for new
   jobForm: FormGroup;
+  private sub: Subscription;
+  
   job: IJob
   = {
     _id: '',
@@ -80,6 +86,16 @@ export class JobEditComponent implements OnInit {
     console.log('not zero id = ' + id);
     //this.getJob(id);
     this.buildForm();
+
+this.sub = this.route.params.subscribe(
+            params => {
+              //console.log(params['id']);
+                let id = params['id'];
+                this.getJob(id);
+
+        });
+
+
   }
 
   getJob(id: string) {
@@ -137,11 +153,13 @@ export class JobEditComponent implements OnInit {
         (err) => console.log(err));
 
     }
+    this.onBack();
   }
 
   cancel(event: Event) {
     event.preventDefault();
-    this.router.navigate(['/Jobs']);
+    this.onBack();
+    //this.router.navigate(['/Jobs']);
   }
 
   delete(event: Event) {
@@ -157,5 +175,10 @@ export class JobEditComponent implements OnInit {
       },
       (err) => console.log(err));
   }
-
+     ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
+onBack(): void {
+        this.router.navigate(['/jobs']);
+    }
 }

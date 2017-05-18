@@ -12,7 +12,7 @@ export class JobListComponent implements OnInit {
     pageTitle: string = 'Job List';
     listFilter: string;
     errorMessage: string;
-
+// private sub: Subscription;
     jobs: IJob[];
 
   constructor(private _jobService: JobService) { }
